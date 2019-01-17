@@ -34,7 +34,6 @@ clc_escape() {
 declare -A clc_lookup_attr=(
     [normal]='0' [bold]='1' [underline]='4'
     [reverse]='7' [invisible]='8' [blink]='5'
-    [black]='0;30'
 )
 
 declare -A clc_lookup_color=(

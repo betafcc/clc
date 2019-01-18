@@ -7,7 +7,7 @@ clc() {
 }
 
 clc_parse() (
-    while IFS= read -r -n 1 char; do
+    while IFS= read -n 1 -d '' char; do
         case "${char}" in
             '>') printf '\e[0m'; return 0;;
             '<') raw_code=$(clc_parse_directive)

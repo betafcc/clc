@@ -1,11 +1,19 @@
 #!/usr/bin/env bash
 clc () 
 { 
-    if [ $# -ge 1 ]; then
-        printf '%s' "$@" | clc_parse;
-    else
-        clc_parse;
-    fi
+    case "${1}" in 
+        -e | --escape)
+            shift;
+            clc "$@" | sed -E 's,(\x1B\[[0-9;]*[a-zA-Z]),\\\[\1\\\],g'
+        ;;
+        *)
+            if [ $# -ge 1 ]; then
+                printf '%s' "$@" | clc_parse;
+            else
+                clc_parse;
+            fi
+        ;;
+    esac
 }
 clc_code_bg () 
 { 
@@ -72,10 +80,6 @@ clc_code_yellow ()
 { 
     echo 33
 }
-clc_escape () 
-{ 
-    sed -E 's,(\x1B\[[0-9;]*[a-zA-Z]),\\\[\1\\\],g'
-}
 clc_parse () 
 { 
     ( while IFS= read -n 1 -d '' char; do
@@ -108,5 +112,4 @@ clc_parse_directive ()
 
 # run `clc` if not being sorced
 # https://stackoverflow.com/a/2684300
-[[ "${BASH_SOURCE[0]}" = "${0}" ]] && clc "$@"
-
+[[ "${BASH_SOURCE[0]}" = "${0}" ]] && clc "${@}"

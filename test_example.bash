@@ -7,11 +7,11 @@ clc '\
   <underline: you?>  >
 '
 
-PS1=$(clc '\
+PS1=$(clc --escape '\
 <bold:\
 <red:[\
 <yellow:\\u>\
 <green:@>\
 <blue:\\h> \
 <magenta:\\W>\
-]>$ >' | clc_escape)
+]>$ >')

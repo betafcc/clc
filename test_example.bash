@@ -1,4 +1,4 @@
-source './clc.bash'
+source './clc'
 
 clc '\
 <rgb 255 255 255 + bg rgb 235 100 100:\

@@ -1,0 +1,112 @@
+#!/usr/bin/env bash
+clc () 
+{ 
+    if [ $# -ge 1 ]; then
+        printf '%s' "$@" | clc_parse;
+    else
+        clc_parse;
+    fi
+}
+clc_code_bg () 
+{ 
+    local fg="$(clc_code_"${@}")";
+    echo "4${fg:1}"
+}
+clc_code_black () 
+{ 
+    echo 30
+}
+clc_code_blink () 
+{ 
+    echo 5
+}
+clc_code_blue () 
+{ 
+    echo 34
+}
+clc_code_bold () 
+{ 
+    echo 1
+}
+clc_code_cyan () 
+{ 
+    echo 36
+}
+clc_code_green () 
+{ 
+    echo 32
+}
+clc_code_invisible () 
+{ 
+    echo 8
+}
+clc_code_magenta () 
+{ 
+    echo 35
+}
+clc_code_normal () 
+{ 
+    echo 0
+}
+clc_code_red () 
+{ 
+    echo 31
+}
+clc_code_reverse () 
+{ 
+    echo 7
+}
+clc_code_rgb () 
+{ 
+    echo "38;2;${1};${2};${3}"
+}
+clc_code_underline () 
+{ 
+    echo 4
+}
+clc_code_white () 
+{ 
+    echo 37
+}
+clc_code_yellow () 
+{ 
+    echo 33
+}
+clc_escape () 
+{ 
+    sed -E 's,(\x1B\[[0-9;]*[a-zA-Z]),\\\[\1\\\],g'
+}
+clc_parse () 
+{ 
+    ( while IFS= read -n 1 -d '' char; do
+        case "${char}" in 
+            '>')
+                printf '\e[0m';
+                return 0
+            ;;
+            '<')
+                raw_code=$(clc_parse_directive);
+                printf '\e[%bm' "${raw_code}";
+                clc_parse "$@" "${raw_code}";
+                printf '\e[%bm' "$@"
+            ;;
+            *)
+                printf '%b' "${char}"
+            ;;
+        esac;
+    done )
+}
+clc_parse_directive () 
+{ 
+    ( IFS= read -r -d ':' directives;
+    IFS=+;
+    for directive in ${directives};
+    do
+        eval "clc_code_$(printf ${directive} | xargs)";
+    done | paste -sd ';' - )
+}
+
+# run `clc` if not being sorced
+# https://stackoverflow.com/a/2684300
+[[ "${BASH_SOURCE[0]}" = "${0}" ]] && clc "$@"
+

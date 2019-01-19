@@ -1,10 +1,12 @@
 clc() {
-  case "${1}" in
-    -e|--escape) shift; clc "$@" | sed -E 's,(\x1B\[[0-9;]*[a-zA-Z]),\\\[\1\\\],g';;
-    *) if [ $# -ge 1 ]; then printf '%s' "$@" | clc_parse
-       else clc_parse
-       fi;;
-  esac
+  if [ $# -eq 0 ]; then
+    clc_parse
+  else
+    case "${1}" in
+      -e|--escape) shift; clc "$@" | sed -E 's,(\x1B\[[0-9;]*[a-zA-Z]),\\\[\1\\\],g';;
+      *) printf '%s' "$@" | clc
+    esac
+  fi
 }
 
 clc_parse() (

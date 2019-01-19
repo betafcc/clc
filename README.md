@@ -3,7 +3,7 @@ Tiny bash utility for  coloring terminal output and prompt
 
 ![](./example.png)
 
-Pipe to `clc_escape` to escape invisible characters (needed for use in PS1):
+Use `-e|--espace` to escape invisible characters (needed for use in PS1):
 
 ![](./example_prompt.png)
 

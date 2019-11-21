@@ -1,6 +1,13 @@
 # clc
 Tiny bash utility for  coloring terminal output and prompt
 
+
+## Try it
+
+```bash
+bash <(curl -s https://raw.githubusercontent.com/betafcc/clc/master/clc) '<red:hello <reverse:world>'
+```
+
 ![](./example.png)
 
 Use `-e|--espace` to escape invisible characters (needed for use in PS1):

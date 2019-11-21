@@ -1,6 +1,15 @@
 # clc
 Tiny bash utility for  coloring terminal output and prompt
 
+![](./examples/usage.gif)
+
+The motivating use case was easily stacking styles, which is not possible to do with other tools like [node's chalk](https://github.com/chalk/chalk-cli):
+
+![](./examples/stacking.gif)
+
+Useful for templating colorful prompts (use `-e|--escape` for this):
+
+![](./examples/prompt.gif)
 
 ## Try it
 

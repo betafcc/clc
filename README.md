@@ -9,7 +9,9 @@ The motivating use case was easily stacking styles, which is not possible to do 
 
 Useful for templating colorful prompts (use `-e|--escape` for this):
 
-![](./examples/prompt.gif)
+`PS1=$(clc -e '<bold:<red:[<yellow:\\u><green:@><blue:\\h><magenta:\\W>]>$ >')`
+
+![](./examples/prompt.png)
 
 ## Try it
 
@@ -30,12 +32,6 @@ clc '<red:hello <reverse:world>'
 ```
 
 ## More
-
-![](./example.png)
-
-Use `-e|--espace` to escape invisible characters (needed for use in PS1):
-
-![](./example_prompt.png)
 
 Colors:
 - black

@@ -33,7 +33,37 @@ clc '<red:hello <reverse:world>'
 
 ## More
 
-Colors:
+
+### Use foreground colors:
+
+```bash
+clc '<red:hello>'
+clc '<green:hello <blue: world>>'
+clc '<rgb 255 120 120: hello>'
+```
+
+### Use background colors:
+
+```bash
+clc '<bg red:hello>'
+clc '<bg green:hello <bg blue: world>>'
+clc '<bg rgb 255 120 120: hello>'
+```
+
+### Use effects:
+
+```bash
+clc '<bold:hello>'
+clc '<bold:hello <underline: world>>'
+```
+
+### Combine commands:
+
+```bash
+clc '<red + bg blue + underline + bold:hello>'
+```
+
+### Available Colors:
 - black
 - red
 - green
@@ -44,14 +74,10 @@ Colors:
 - white
 - rgb <0-255> <0-255> <0-255>
 
-For background instead of foreground, just prepend 'bg' to color
-
-Attrs:
+### Available effects:
 - normal
 - bold
 - underline
 - reverse
 - invisible
 - blink
-
-Combine more than one command with `+`, eg `<bold + blue + bg red: hi>`

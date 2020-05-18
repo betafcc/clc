@@ -77,7 +77,17 @@ clc '<red + bg blue + underline + bold:hello>'
 ### Available effects:
 - normal
 - bold
+- dim
+- strike
+- italic
 - underline
 - reverse
 - invisible
 - blink
+
+### Version:
+
+```bash
+clc -v
+clc --version
+```

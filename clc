@@ -1,10 +1,23 @@
 #!/usr/bin/env bash
+_system_arch=x86_64
+_system_name=Mint
+_system_type=Linux
+_system_version=19.1
+gvm_go_name=go1.12.5
+gvm_pkgset_name=global
+rvm_bin_path=/home/betafcc/.rvm/bin
+rvm_path=/home/betafcc/.rvm
+rvm_prefix=/home/betafcc
+rvm_version='1.29.7 (latest)'
 clc () 
 { 
     if [ $# -eq 0 ]; then
         clc_parse;
     else
         case "${1}" in 
+            -v | --version)
+                echo 'v1.1.0'
+            ;;
             -e | --escape)
                 shift;
                 clc "$@" | sed -E 's,(\x1B\[[0-9;]*[a-zA-Z]),\\\[\1\\\],g'
@@ -40,6 +53,10 @@ clc_code_cyan ()
 { 
     echo 36
 }
+clc_code_dim () 
+{ 
+    echo 2
+}
 clc_code_green () 
 { 
     echo 32
@@ -47,6 +64,10 @@ clc_code_green ()
 clc_code_invisible () 
 { 
     echo 8
+}
+clc_code_italic () 
+{ 
+    echo 3
 }
 clc_code_magenta () 
 { 
@@ -67,6 +88,10 @@ clc_code_reverse ()
 clc_code_rgb () 
 { 
     echo "38;2;${1};${2};${3}"
+}
+clc_code_strike () 
+{ 
+    echo 9
 }
 clc_code_underline () 
 { 

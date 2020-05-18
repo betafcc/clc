@@ -10,8 +10,8 @@ clc_code_bg() {
 __clc_short_hands() {
   local key
   local -A lookup_attr=(
-    [normal]='0' [bold]='1' [underline]='4'
-    [reverse]='7' [invisible]='8' [blink]='5'
+    [normal]='0' [bold]='1' [dim]='2' [italic]='3' [underline]='4'
+    [blink]='5' [reverse]='7' [invisible]='8' [strike]='9'
   )
   local -A lookup_color=(
     [black]='0' [red]='1' [green]='2' [yellow]='3'

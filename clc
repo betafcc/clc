@@ -1,14 +1,4 @@
 #!/usr/bin/env bash
-_system_arch=x86_64
-_system_name=Mint
-_system_type=Linux
-_system_version=19.1
-gvm_go_name=go1.12.5
-gvm_pkgset_name=global
-rvm_bin_path=/home/betafcc/.rvm/bin
-rvm_path=/home/betafcc/.rvm
-rvm_prefix=/home/betafcc
-rvm_version='1.29.7 (latest)'
 clc () 
 { 
     if [ $# -eq 0 ]; then
@@ -16,7 +6,7 @@ clc ()
     else
         case "${1}" in 
             -v | --version)
-                echo 'v1.1.0'
+                echo 'v1.1.1'
             ;;
             -e | --escape)
                 shift;

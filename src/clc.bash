@@ -3,7 +3,7 @@ clc() {
     clc_parse
   else
     case "${1}" in
-      -v|--version) echo 'v1.1.0';;
+      -v|--version) echo 'v1.1.1';;
       -e|--escape) shift; clc "$@" | sed -E 's,(\x1B\[[0-9;]*[a-zA-Z]),\\\[\1\\\],g';;
       *) printf '%s' "$@" | clc
     esac

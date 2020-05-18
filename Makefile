@@ -1,4 +1,4 @@
 clc: src/*.bash
-	./make_bundle $^ > $@
+	env -i ./make_bundle $^ > $@
 	chmod +x $@
 .DELETE_ON_ERROR:

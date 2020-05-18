@@ -3,7 +3,7 @@ echo '#!/usr/bin/env bash'
 
 eval "$(printf 'source "%s"\n' "$@")"
 
-declare | sed -n -e "/^_=/,\$p" | sed -n -e "1d;p"
+declare -f  # print the imported functions
 
 printf '
 # run `clc` if not being sorced

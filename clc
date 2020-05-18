@@ -1,129 +1,62 @@
 #!/usr/bin/env bash
-clc () 
-{ 
-    if [ $# -eq 0 ]; then
-        clc_parse;
-    else
-        case "${1}" in 
-            -v | --version)
-                echo 'v1.1.1'
-            ;;
-            -e | --escape)
-                shift;
-                clc "$@" | sed -E 's,(\x1B\[[0-9;]*[a-zA-Z]),\\\[\1\\\],g'
-            ;;
-            *)
-                printf '%s' "$@" | clc
-            ;;
-        esac;
-    fi
+
+clc() {
+  if [ $# -eq 0 ]; then
+    clc_parse
+  else
+    case "${1}" in
+      -v|--version) echo 'v1.1.2';;
+      -e|--escape) shift; clc "$@" | sed -E 's,(\x1B\[[0-9;]*[a-zA-Z]),\\\[\1\\\],g';;
+      *) printf '%s' "$@" | clc
+    esac
+  fi
 }
-clc_code_bg () 
-{ 
-    local fg="$(clc_code_"${@}")";
-    echo "4${fg:1}"
+
+clc_parse() (
+  while IFS= read -n 1 -d '' char; do
+    case "${char}" in
+      '>') printf '\e[0m'; return 0;;
+      '<') raw_code=$(clc_parse_directive)
+           printf '\e[%bm' "${raw_code}"
+           clc_parse "$@" "${raw_code}"
+           printf '\e[%bm' "$@";;
+      *) printf '%b' "${char}";;
+    esac
+  done
+)
+
+clc_parse_directive() (
+  IFS= read -r -d ':' directives;
+  IFS=+
+  for directive in ${directives}; do
+    eval "clc_code_$(printf ${directive} | xargs)"
+  done | paste -sd ';' -
+)
+
+clc_code_black() { echo 30; }
+clc_code_red() { echo 31; }
+clc_code_green() { echo 32; }
+clc_code_yellow() { echo 33; }
+clc_code_blue() { echo 34; }
+clc_code_magenta() { echo 35; }
+clc_code_cyan() { echo 36; }
+clc_code_white() { echo 37; }
+clc_code_rgb() { echo "38;2;${1};${2};${3}"; }
+
+clc_code_bg() {
+  local fg="$(clc_code_"${@}")"
+  echo "4${fg:1}"
 }
-clc_code_black () 
-{ 
-    echo 30
-}
-clc_code_blink () 
-{ 
-    echo 5
-}
-clc_code_blue () 
-{ 
-    echo 34
-}
-clc_code_bold () 
-{ 
-    echo 1
-}
-clc_code_cyan () 
-{ 
-    echo 36
-}
-clc_code_dim () 
-{ 
-    echo 2
-}
-clc_code_green () 
-{ 
-    echo 32
-}
-clc_code_invisible () 
-{ 
-    echo 8
-}
-clc_code_italic () 
-{ 
-    echo 3
-}
-clc_code_magenta () 
-{ 
-    echo 35
-}
-clc_code_normal () 
-{ 
-    echo 0
-}
-clc_code_red () 
-{ 
-    echo 31
-}
-clc_code_reverse () 
-{ 
-    echo 7
-}
-clc_code_rgb () 
-{ 
-    echo "38;2;${1};${2};${3}"
-}
-clc_code_strike () 
-{ 
-    echo 9
-}
-clc_code_underline () 
-{ 
-    echo 4
-}
-clc_code_white () 
-{ 
-    echo 37
-}
-clc_code_yellow () 
-{ 
-    echo 33
-}
-clc_parse () 
-{ 
-    ( while IFS= read -n 1 -d '' char; do
-        case "${char}" in 
-            '>')
-                printf '\e[0m';
-                return 0
-            ;;
-            '<')
-                raw_code=$(clc_parse_directive);
-                printf '\e[%bm' "${raw_code}";
-                clc_parse "$@" "${raw_code}";
-                printf '\e[%bm' "$@"
-            ;;
-            *)
-                printf '%b' "${char}"
-            ;;
-        esac;
-    done )
-}
-clc_parse_directive () 
-{ 
-    ( IFS= read -r -d ':' directives;
-    IFS=+;
-    for directive in ${directives};
-    do
-        eval "clc_code_$(printf ${directive} | xargs)";
-    done | paste -sd ';' - )
-}
+
+clc_code_normal() { echo 0; }
+clc_code_bold() { echo 1; }
+clc_code_dim() { echo 2; }
+clc_code_italic() { echo 3; }
+clc_code_underline() { echo 4; }
+clc_code_blink() { echo 5; }
+clc_code_reverse() { echo 7; }
+clc_code_invisible() { echo 8; }
+clc_code_strike() { echo 9; }
 
 # run `clc` if not being sorced
 # https://stackoverflow.com/a/2684300

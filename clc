@@ -5,7 +5,7 @@ clc() {
     clc_parse
   else
     case "${1}" in
-      -v|--version) echo 'v1.1.2';;
+      -v|--version) echo 'v1.2.0';;
       -e|--escape) shift; clc "$@" | sed -E 's,(\x1B\[[0-9;]*[a-zA-Z]),\\\[\1\\\],g';;
       *) printf '%s' "$@" | clc
     esac
@@ -26,10 +26,10 @@ clc_parse() (
 )
 
 clc_parse_directive() (
-  IFS= read -r -d ':' directives;
-  IFS=+
-  for directive in ${directives}; do
-    eval "clc_code_$(printf ${directive} | xargs)"
+  IFS=+ read -r -d ':' -a directives;
+  for directive in "${directives[@]}"; do
+    directive=(${directive//\#/rgbhex })
+    eval clc_code_${directive[@]}
   done | paste -sd ';' -
 )
 
@@ -42,6 +42,7 @@ clc_code_magenta() { echo 35; }
 clc_code_cyan() { echo 36; }
 clc_code_white() { echo 37; }
 clc_code_rgb() { echo "38;2;${1};${2};${3}"; }
+clc_code_rgbhex() { eval clc_code_rgb $(echo $1 | sed -E -e 's/^(.)(.)(.)$/\1\1\2\2\3\3/;s/.{2}/$((16#&)) /g'); }
 
 clc_code_bg() {
   local fg="$(clc_code_"${@}")"

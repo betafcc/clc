@@ -22,7 +22,7 @@ bash <(curl -s https://raw.githubusercontent.com/betafcc/clc/master/clc) '<red:h
 ## Install
 
 ```bash
-curl -s https://raw.githubusercontent.com/betafcc/clc/master/clc | sudo tee /usr/local/bin/clc > /dev/null && sudo chmod +x /usr/local/bin/clc
+dest='/usr/local/bin/clc'; curl -s https://raw.githubusercontent.com/betafcc/clc/master/clc | sudo tee "${dest}" > /dev/null && sudo chmod +x "${dest}"
 ```
 
 Then use:
@@ -40,6 +40,9 @@ clc '<red:hello <reverse:world>'
 clc '<red:hello>'
 clc '<green:hello <blue: world>>'
 clc '<rgb 255 120 120: hello>'
+clc '<rgb 255 120 120: hello>'
+clc '<#f66: hello>'
+clc '<#66fa73: hello>'
 ```
 
 ### Use background colors:
@@ -48,6 +51,7 @@ clc '<rgb 255 120 120: hello>'
 clc '<bg red:hello>'
 clc '<bg green:hello <bg blue: world>>'
 clc '<bg rgb 255 120 120: hello>'
+clc '<bg #66fa73: hello>'
 ```
 
 ### Use effects:
@@ -73,6 +77,8 @@ clc '<red + bg blue + underline + bold:hello>'
 - cyan
 - white
 - rgb <0-255> <0-255> <0-255>
+- #000 - #fff
+- #000000 - #ffffff
 
 ### Available effects:
 - normal

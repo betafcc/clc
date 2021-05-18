@@ -1,12 +1,23 @@
 #!/usr/bin/env bash
 
 clc() {
+  local open="${open:-'\e[%bm'}"
+  local close="${close:-'\e[0m'}"
+
   if [ $# -eq 0 ]; then
     clc_parse
   else
     case "${1}" in
-      -v|--version) echo 'v1.2.0';;
-      -e|--escape) shift; clc "$@" | sed -E 's,(\x1B\[[0-9;]*[a-zA-Z]),\\\[\1\\\],g';;
+      -v|--version) echo 'v2.0.0';;
+      -e|--escape)
+        shift
+        case "${1}" in
+          zsh) shift; open='%%{\e[%bm%%}'; close='%%{\e[0m%%}';;
+          bash) shift; open='\[\e[%bm\]'; close='\[\e[0m\]';;
+          *) shift; open='\001\e[%bm\002'; close='\001\e[0m\002';;
+        esac
+        clc "$@"
+        ;;
       *) printf '%s' "$@" | clc
     esac
   fi
@@ -15,11 +26,11 @@ clc() {
 clc_parse() (
   while IFS= read -n 1 -d '' char; do
     case "${char}" in
-      '>') printf '\e[0m'; return 0;;
+      '>') printf "${close}"; return 0;;
       '<') raw_code=$(clc_parse_directive)
-           printf '\e[%bm' "${raw_code}"
+           printf "${open}" "${raw_code}"
            clc_parse "$@" "${raw_code}"
-           printf '\e[%bm' "$@";;
+           printf "${open}" "$@";;
       *) printf '%b' "${char}";;
     esac
   done

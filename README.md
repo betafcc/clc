@@ -7,9 +7,12 @@ The motivating use case was easily stacking styles, which is not possible to do 
 
 ![](./examples/stacking.gif)
 
-Useful for templating colorful prompts (use `-e|--escape` for this):
+Useful for templating colorful prompts (use `-e|--escape [zsh|bash]` for this)
 
-`PS1=$(clc -e '<bold:<red:[<yellow:\\u><green:@><blue:\\h><magenta:\\W>]>$ >')`
+for bash: `PS1=$(clc -e bash '<bold:<red:[<yellow:\\u><green:@><blue:\\h><magenta:\\W>]>$ >')`
+
+for zsh: `PS1=$(clc -e zsh '<bold:<red:[<yellow:%n><green:@><blue:%m><magenta:%1d>]>$ >')`
+
 
 ![](./examples/prompt.png)
 

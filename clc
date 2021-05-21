@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 clc() {
-  local open="${open:-'\e[%bm'}"
-  local close="${close:-'\e[0m'}"
+  local open="${open:-\e[%bm}"
+  local close="${close:-\e[0m}"
 
   if [ $# -eq 0 ]; then
     clc_parse

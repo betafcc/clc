@@ -5,20 +5,20 @@ clc() {
   local close="${close:-\e[0m}"
 
   if [ $# -eq 0 ]; then
-    clc_parse
+    clc_parse ""
   else
     case "${1}" in
-      -v|--version) echo 'v2.1.0';;
+      -v|--version) echo 'v2.1.1';;
       -e|--escape)
         shift
         case "${1}" in
-          zsh) shift; open='%%{\e[%bm%%}'; close='%%{\e[0m%%}';;
+          zsh) shift; open='%%{\e[%bm%%}'; close='%{\e[0m%}';;
           bash) shift; open='\[\e[%bm\]'; close='\[\e[0m\]';;
           *) shift; open='\001\e[%bm\002'; close='\001\e[0m\002';;
         esac
         clc "$@"
         ;;
-      *) printf '%s' "$@" | clc
+      *) printf '%b' "$@" | clc
     esac
   fi
 }

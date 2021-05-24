@@ -8,7 +8,7 @@ clc() {
     clc_parse
   else
     case "${1}" in
-      -v|--version) echo 'v2.0.0';;
+      -v|--version) echo 'v2.1.0';;
       -e|--escape)
         shift
         case "${1}" in
@@ -23,52 +23,53 @@ clc() {
   fi
 }
 
-clc_parse() (
+clc_parse() {
+  local char
   while IFS= read -n 1 -d '' char; do
     case "${char}" in
-      '>') printf "${close}"; return 0;;
-      '<') raw_code=$(clc_parse_directive)
-           printf "${open}" "${raw_code}"
-           clc_parse "$@" "${raw_code}"
-           printf "${open}" "$@";;
-      *) printf '%b' "${char}";;
+    '>') set "${@:1:$#-1}"; printf '%b' "${close}" "${@}";;
+    '<') set "${@}" "$(clc_parse_directive)"; printf '%b' "${@:$#-1}";;
+    *) printf '%b' "${char}" ;;
     esac
   done
-)
+}
 
-clc_parse_directive() (
-  IFS=+ read -r -d ':' -a directives;
-  for directive in "${directives[@]}"; do
-    directive=(${directive//\#/rgbhex })
-    eval clc_code_${directive[@]}
-  done | paste -sd ';' -
-)
+clc_parse_directive() {
+  local -a directives
+  IFS=+ read -r -d ':' -a directives
+  printf "${open}" $(
+    for directive in "${directives[@]}"; do
+      directive=(${directive//\#/rgbhex })
+      eval clc_code_${directive[@]}
+    done | paste -sd ';' -
+  )
+}
 
-clc_code_black() { echo 30; }
-clc_code_red() { echo 31; }
-clc_code_green() { echo 32; }
-clc_code_yellow() { echo 33; }
-clc_code_blue() { echo 34; }
-clc_code_magenta() { echo 35; }
-clc_code_cyan() { echo 36; }
-clc_code_white() { echo 37; }
-clc_code_rgb() { echo "38;2;${1};${2};${3}"; }
-clc_code_rgbhex() { eval clc_code_rgb $(echo $1 | sed -E -e 's/^(.)(.)(.)$/\1\1\2\2\3\3/;s/.{2}/$((16#&)) /g'); }
+clc_code_black() { printf '%b' 30; }
+clc_code_red() { printf '%b' 31; }
+clc_code_green() { printf '%b' 32; }
+clc_code_yellow() { printf '%b' 33; }
+clc_code_blue() { printf '%b' 34; }
+clc_code_magenta() { printf '%b' 35; }
+clc_code_cyan() { printf '%b' 36; }
+clc_code_white() { printf '%b' 37; }
+clc_code_rgb() { printf '%b' "38;2;${1};${2};${3}"; }
+clc_code_rgbhex() { eval clc_code_rgb $(printf '%b' $1 | sed -E -e 's/^(.)(.)(.)$/\1\1\2\2\3\3/;s/.{2}/$((16#&)) /g'); }
 
 clc_code_bg() {
   local fg="$(clc_code_"${@}")"
-  echo "4${fg:1}"
+  printf '%b' "4${fg:1}"
 }
 
-clc_code_normal() { echo 0; }
-clc_code_bold() { echo 1; }
-clc_code_dim() { echo 2; }
-clc_code_italic() { echo 3; }
-clc_code_underline() { echo 4; }
-clc_code_blink() { echo 5; }
-clc_code_reverse() { echo 7; }
-clc_code_invisible() { echo 8; }
-clc_code_strike() { echo 9; }
+clc_code_normal() { printf '%b' 0; }
+clc_code_bold() { printf '%b' 1; }
+clc_code_dim() { printf '%b' 2; }
+clc_code_italic() { printf '%b' 3; }
+clc_code_underline() { printf '%b' 4; }
+clc_code_blink() { printf '%b' 5; }
+clc_code_reverse() { printf '%b' 7; }
+clc_code_invisible() { printf '%b' 8; }
+clc_code_strike() { printf '%b' 9; }
 
 # run `clc` if not being sorced
 # https://stackoverflow.com/a/2684300

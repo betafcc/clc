@@ -70,6 +70,12 @@ clc '<bold:hello <underline: world>>'
 clc '<red + bg blue + underline + bold:hello>'
 ```
 
+### Escape characters with '%':
+
+```bash
+clc '<red:%<hello world%>>'
+```
+
 ### Available Colors:
 - black
 - red
